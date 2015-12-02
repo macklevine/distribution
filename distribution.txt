@@ -1,0 +1,47 @@
+Dim Counter1 As Integer
+Dim Counter2 As Integer
+Dim distCell As Integer 'for keeping track of where we put our bin.
+
+Dim avg As String
+
+Dim min As Long
+Dim max As Long
+Dim size As Long
+Dim currentIncrement As Long
+Dim increment As Long
+
+
+Sub Averager()
+    distCell = 2
+    Counter1 = 2
+    Counter2 = 2
+    With ActiveSheet
+        min = ActiveSheet.Cells(2, 2).Value
+    
+        Do Until IsEmpty(.Cells(Counter1, 2))
+            max = .Cells(Counter1, 2).Value
+            Counter1 = Counter1 + 1
+        Loop
+
+        size = Abs(min) + Abs(max) 'calculate the size of our range.
+        increment = size / 250 'calculate the increment between each bin.
+        currentIncrement = min + increment 'establish the upper limit for the first bin.
+
+        .Cells(distCell, 4).Value = currentIncrement
+        .Cells(distCell, 5).Value = 0
+        
+        Do Until IsEmpty(.Cells(Counter2, 2).Value)
+
+            While .Cells(Counter2, 2).Value >= currentIncrement
+                currentIncrement = currentIncrement + increment
+                distCell = distCell + 1
+                .Cells(distCell, 4).Value = currentIncrement 'initialize a new bin cell.
+                .Cells(distCell, 5).Value = 0
+            Wend
+            .Cells(distCell, 5).Value = .Cells(distCell, 5).Value + 1
+            Counter2 = Counter2 + 1
+        Loop
+    End With
+
+    
+End Sub
